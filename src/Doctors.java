@@ -2,20 +2,50 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Doctors {
     private Connection connection;
+    private Scanner scanner;
+
+    public Doctors(Connection connection, Scanner scanner) {
+        this.connection = connection;
+        this.scanner = scanner;
+    }
 
     public Doctors(Connection connection) {
         this.connection = connection;
+        this.scanner = new Scanner(System.in);
     }
 
-   
+    public void addDoctor() {
+        System.out.print("Enter Doctor Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Specialization: ");
+        String specialty = scanner.nextLine();
+
+        String query = "INSERT INTO doctors(name, specialty) VALUES(?, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, specialty);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Doctor Added Successfully!");
+            } else {
+                System.out.println("Failed to add doctor.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void viewDoctors() {
         String query = "SELECT * FROM doctors";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("Doctors:");
             System.out.println("+--------+----------------------+--------------------+");
@@ -24,8 +54,8 @@ public class Doctors {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String specialization = resultSet.getString("specialization");
-                System.out.printf("|%-8s|%-22s|%-20s|\n", id, name, specialization);                
+                String specialization = resultSet.getString("specialty");
+                System.out.printf("|%-8s|%-22s|%-20s|\n", id, name, specialization);
                 System.out.println("+--------+----------------------+--------------------+");
             }
         } catch (SQLException e) {
@@ -33,9 +63,9 @@ public class Doctors {
         }
     }
 
-    public boolean getDoctorById (int id) {
+    public boolean getDoctorById(int id) {
         String query = "SELECT * FROM doctors WHERE id = ?";
-        
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);

@@ -46,6 +46,7 @@ public class Patient {
         }
     }
 
+
     public void viewPatients() {
         String query = "SELECT * FROM patients";
         try {

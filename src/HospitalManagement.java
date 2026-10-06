@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 public class HospitalManagement {
     private static final String url = "jdbc:mysql://localhost:3306/hospital";
     private static final String username = "root";
-    private static final String password = "antU@7548";
+    private static final String password = "1122";
 
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
@@ -26,6 +26,7 @@ public class HospitalManagement {
                 System.out.println("1. Add Patient");
                 System.out.println("2. View Patients");
                 System.out.println("3. View Doctors");
+                System.out.println("6. Add Doctor");
                 System.out.println("4. Book Appointment");
                 System.out.println("5. Exit");
                 System.out.print("Enter your choice: ");
@@ -57,6 +58,11 @@ public class HospitalManagement {
                         System.out.println("Connection closed!");
                         scanner.close();
                         return;
+                    case 6:
+                        // Add patient
+                        doctor.addDoctor();
+                        System.out.println();
+                        break;
                     default:
                         System.out.println("Invalid choice!");
                 }
