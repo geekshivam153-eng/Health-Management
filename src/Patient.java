@@ -51,7 +51,7 @@ public class Patient {
         String query = "SELECT * FROM patients";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("Patients:");
             System.out.println("+--------+----------------------+---------+----------+");
